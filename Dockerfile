@@ -1,4 +1,4 @@
 FROM scratch
-MAINTAINER Brian Akins <brian@akins.org>
-COPY alertmanager-webhook-example.linux /alertmanager-webhook-example
-ENTRYPOINT [ "/alertmanager-webhook-example" ]
+MAINTAINER Brandon Weng <wengbrandon@gmail.com>
+COPY alertmanager-discord.linux /alertmanager-discord
+ENTRYPOINT [ "/alertmanager-discord" ]

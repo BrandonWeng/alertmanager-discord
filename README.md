@@ -1,4 +1,4 @@
-alertmanager-discord
+Alertmanager -> Discord Webhook
 ============================
 Recieves webhook from alert-manager and routes it to Discord.
 
