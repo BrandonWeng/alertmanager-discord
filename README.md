@@ -11,6 +11,9 @@ go build
 curl -X POST -H "Content-Type: application/json" -d @example/alert-manager.json  127.0.0.1:9094/alerts
 ```
 
+You can also use the docker image:
+`ghcr.io/brandonweng/alertmanager-discord:0.1.0`
+
 ### Using
 ```
 # The root route on which each incoming alert enters.
