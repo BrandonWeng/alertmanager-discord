@@ -1,37 +1,30 @@
-alertmanager-webhook-example
+alertmanager-discord
 ============================
+Recieves webhook from alert-manager and routes it to Discord.
 
-`alertmanager-webhook-example` is a simple example of a webhook receiver for the [Prometheus
-Alertmanager](https://prometheus.io/docs/alerting/alertmanager/). It expect to receive
-aleter messages in POST bodies to `/alerts` in JSON in the format described in
-the [receiever webhook docs](https://prometheus.io/docs/alerting/configuration/#webhook-receiver-<webhook_config>)
+![Discord Example](example/discord.png)
 
-Usage
-=====
-
-`alertmanager-webhook-example` stores an array of received alert messages in memory.
-
+### Using the service
 ```
-$ ./alertmanager-webhook-example
-Usage of alertmanager-webhook-example
-  -addr string
-    	address to listen for webhook (default ":8080")
-  -cap int
-    	capacity of the simple alerts store (default 64)
-exit status 2
+go build
+./alertmanager-discord --webhook <webhook-url>
+curl -X POST -H "Content-Type: application/json" -d @example/alert-manager.json  127.0.0.1:9094/alerts
 ```
 
-It expects alerts to be POSTed in JSON to `/alerts`. An HTTP GET to `/alerts` will return
-the alerts in memory.
+### Using
+```
+# The root route on which each incoming alert enters.
+route:
+  group_by: ['alertname']
+  group_wait: 20s
+  group_interval: 5m
+  repeat_interval: 3h
+  receiver: discord_webhook
 
-Building
-========
-`alertmanager-webhook-example` has no external dependencies.  Clone this repo into
-your GOPATH and run `go build .` in the top level of this repo.
-
-prebuilt Docker images are available at https://quay.io/repository/bakins/alertmanager-webhook-example
-
-LICENSE
-=======
+receivers:
+- name: 'discord_webhook'
+  webhook_configs:
+  - url: 'http://localhost:9094'
+```
 
 See [LICENSE](./LICENSE)

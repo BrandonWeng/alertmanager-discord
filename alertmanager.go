@@ -36,6 +36,6 @@ type (
 		StartsAt    string            `json:"startsAt,omitempty"`
 		EndsAt      string            `json:"endsAt,omitempty"`
 		GeneratorURL string			  `json:"generatorURL,omitempty"`
-		Status string			  `json:"status,omitempty"`
+		Status string			  	  `json:"status,omitempty"`
 	}
 )

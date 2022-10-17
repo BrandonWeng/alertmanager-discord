@@ -89,11 +89,17 @@ func (client *DiscordClient) postDiscordMessage(hookMessage HookMessage) {
 }
 
 func (client *DiscordClient) BuildDiscordMessageRequest(message HookMessage, alert Alert) DiscordRequest {
+	embdedFields := []DiscordEmbededField{
+		{Name: "Description", Value: alert.Annotations.Description},
+		{Name: "GeneratorURL", Value: alert.GeneratorURL},
+		{Name: "Labels", Value: getLabelString(alert.Labels)},
+	}
+
 	RichEmbed := DiscordEmbeded{
 		Title:       fmt.Sprintf("[%s:%d] %s", strings.ToUpper(alert.Status), len(message.Alerts), message.CommonLabels.Alertname),
 		Description: message.CommonAnnotations.Summary,
 		Color:       ColorGrey,
-		Fields:      []DiscordEmbededField{},
+		Fields:      embdedFields,
 	}
 
 	if alert.Status == "firing" {
@@ -103,7 +109,7 @@ func (client *DiscordClient) BuildDiscordMessageRequest(message HookMessage, ale
 	}
 
 	return DiscordRequest{
-		Content: fmt.Sprintf(" === %s === \n", message.CommonAnnotations.Summary),
+		Content: message.CommonAnnotations.Summary,
 		Embeds: []DiscordEmbeded{RichEmbed},
 	}
 }
@@ -115,4 +121,12 @@ func (client *DiscordClient) MakePostRequest(discordRequest DiscordRequest) {
 	if err != nil {
 		log.Printf("ERROR: Recieved error response %s", err)
 	}
+}
+
+func getLabelString(labels map[string]string) string {
+	labelString := ""
+	for key, value := range labels {
+		labelString += fmt.Sprintf("\n%s %s", key, value)
+	}
+	return labelString
 }
