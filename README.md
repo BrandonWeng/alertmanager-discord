@@ -5,6 +5,7 @@ Recieves webhook from alert-manager and routes it to Discord.
 ![Discord Example](example/discord.png)
 
 ### Using the service
+
 ```
 go build
 ./alertmanager-discord --webhook <webhook-url>
@@ -14,8 +15,9 @@ curl -X POST -H "Content-Type: application/json" -d @example/alert-manager.json 
 You can also use the docker image:
 `ghcr.io/brandonweng/alertmanager-discord:0.1.0`
 
-****### Using
-```****
+### Using
+
+```
 # The root route on which each incoming alert enters.
 route:
   group_by: ['alertname']
