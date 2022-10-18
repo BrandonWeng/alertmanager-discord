@@ -29,7 +29,7 @@ route:
 receivers:
 - name: 'discord_webhook'
   webhook_configs:
-  - url: 'http://localhost:9094'
+  - url: 'http://localhost:9094/alerts' // If you're running in a container-network then replace localhost with your container name
 ```
 
 See [LICENSE](./LICENSE)
