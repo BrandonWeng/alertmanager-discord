@@ -117,6 +117,7 @@ func (client *DiscordClient) BuildDiscordMessageRequest(message HookMessage, ale
 func (client *DiscordClient) MakePostRequest(discordRequest DiscordRequest) {
 	requestJson, _ := json.Marshal(discordRequest)
 	log.Printf("Sending Post Request to Discord Webhook")
+	pp.Println(discordRequest)
 	_, err := http.Post(client.WebhookUrl, "application/json", bytes.NewReader(requestJson))
 
 	if err != nil {
