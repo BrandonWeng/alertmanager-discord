@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
+	"sync"
 
 	pp "github.com/k0kubun/pp/v3"
 )
@@ -77,15 +78,20 @@ func (client *DiscordClient) postHandler(w http.ResponseWriter, r *http.Request)
 	log.Printf("Recieved alerts: \n")
 	pp.Println(m)
 
-	go client.postDiscordMessage(m)
+	client.postDiscordMessage(m)
 }
 
-
 func (client *DiscordClient) postDiscordMessage(hookMessage HookMessage) {
+	var wg sync.WaitGroup
 	for _, alert := range hookMessage.Alerts {
-		request := client.BuildDiscordMessageRequest(hookMessage, alert)
-		client.MakePostRequest(request)
+		wg.Add(1)
+		go func(alert Alert) {
+			defer wg.Done()
+			request := client.BuildDiscordMessageRequest(hookMessage, alert)
+			client.MakePostRequest(request)
+		}(alert)
 	}
+	wg.Wait()
 }
 
 func (client *DiscordClient) BuildDiscordMessageRequest(message HookMessage, alert Alert) DiscordRequest {
