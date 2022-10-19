@@ -84,7 +84,7 @@ func (client *DiscordClient) postHandler(w http.ResponseWriter, r *http.Request)
 func (client *DiscordClient) postDiscordMessage(hookMessage HookMessage) {
 	for _, alert := range hookMessage.Alerts {
 		request := client.BuildDiscordMessageRequest(hookMessage, alert)
-		go client.MakePostRequest(request)
+		client.MakePostRequest(request)
 	}
 }
 
