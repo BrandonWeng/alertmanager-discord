@@ -82,6 +82,7 @@ func (client *DiscordClient) postHandler(w http.ResponseWriter, r *http.Request)
 }
 
 func (client *DiscordClient) postDiscordMessage(hookMessage HookMessage) {
+	log.Printf("Sending Discord Message for alerts")
 	var wg sync.WaitGroup
 	for _, alert := range hookMessage.Alerts {
 		wg.Add(1)
